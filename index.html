@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management 3D Carousel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>Spotify Family</h1>
+            <p> because in the clurb we all family... </p>
+        </header>
+
+        <!-- Carousel Container -->
+        <div class="carousel-wrapper">
+            <!-- Navigation Buttons -->
+            <button class="nav-btn nav-btn-left" id="prevBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
+            </button>
+
+            <button class="nav-btn nav-btn-right" id="nextBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24"  stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                </svg>
+            </button>
+
+            <!-- Carousel -->
+            <div class="carousel" id="carousel">
+                <!-- Cards will be dynamically generated here -->
+            </div>
+
+            <!-- Indicators -->
+            <div class="indicators" id="indicators">
+                <!-- Indicators will be dynamically generated here -->
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAccounts">6</div>
+                    <div class="stat-label">Total Accounts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalAmount">$1,218.47</div>
+                    <div class="stat-label">Total Amount</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingPayments">3</div>
+                    <div class="stat-label">Pending Payments</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

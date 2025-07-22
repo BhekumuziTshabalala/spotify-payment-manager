@@ -1,0 +1,432 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 50%, #e0e7ff 100%);
+    min-height: 100vh;
+    color: #1f2937;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.header {
+    text-align: center;
+    padding: 48px 0 32px;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #6b7280;
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Carousel Wrapper */
+.carousel-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+    margin-bottom: 64px;
+}
+
+/* Navigation Buttons */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+    color: #374151;
+}
+
+.nav-btn:hover {
+    background: white;
+    transform: translateY(-50%) scale(1.1);
+    color: #3b82f6;
+}
+
+.nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.nav-btn-left {
+    left: 16px;
+}
+
+.nav-btn-right {
+    right: 16px;
+}
+
+/* Carousel */
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 960px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+/* Account Cards */
+.account-card {
+    position: absolute;
+    width: 320px;
+    height: 400px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.account-card.center {
+    transform: scale(1) translateX(0);
+    z-index: 30;
+    filter: blur(0);
+    opacity: 1;
+}
+
+.account-card.left {
+    transform: scale(0.85) translateX(-96px);
+    z-index: 10;
+    filter: blur(2px);
+    opacity: 0.75;
+}
+
+.account-card.right {
+    transform: scale(0.85) translateX(96px);
+    z-index: 10;
+    filter: blur(2px);
+    opacity: 0.75;
+}
+
+.account-card.left:hover,
+.account-card.right:hover {
+    opacity: 0.9;
+}
+
+/* Avatar Section */
+.avatar-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.avatar-container {
+    position: relative;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    background: #3b82f6;
+    border-radius: 50%;
+    padding: 4px;
+    border: 2px solid white;
+}
+
+.avatar-badge svg {
+    width: 12px;
+    height: 12px;
+    color: white;
+}
+
+/* Card Content */
+.card-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.status-badge {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.badge.paid {
+    color: #059669;
+    background: #d1fae5;
+}
+
+.badge.pending {
+    color: #d97706;
+    background: #fef3c7;
+}
+
+.badge.overdue {
+    color: #dc2626;
+    background: #fee2e2;
+}
+
+/* Billing Details */
+.billing-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.detail-icon {
+    width: 18px;
+    height: 18px;
+    color: #6b7280;
+}
+
+.detail-content {
+    flex: 1;
+}
+
+.detail-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.detail-value.amount {
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+/* Action Button */
+.action-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 16px;
+}
+
+.action-btn.paid {
+    background: #10b981;
+    color: white;
+}
+
+.action-btn.paid:hover {
+    background: #059669;
+}
+
+.action-btn.pending {
+    background: #3b82f6;
+    color: white;
+}
+
+.action-btn.pending:hover {
+    background: #2563eb;
+}
+
+.action-btn.overdue {
+    background: #ef4444;
+    color: white;
+}
+
+.action-btn.overdue:hover {
+    background: #dc2626;
+}
+
+/* Indicators */
+.indicators {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #d1d5db;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+.indicator.active {
+    background: #3b82f6;
+    transform: scale(1.25);
+}
+
+.indicator:hover {
+    background: #9ca3af;
+}
+
+/* Stats Section */
+.stats-section {
+    margin-top: 64px;
+    padding-bottom: 48px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.stat-card:nth-child(1) .stat-number {
+    color: #3b82f6;
+}
+
+.stat-card:nth-child(2) .stat-number {
+    color: #10b981;
+}
+
+.stat-card:nth-child(3) .stat-number {
+    color: #f59e0b;
+}
+
+.stat-label {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 2rem;
+    }
+    
+    .carousel-wrapper {
+        min-height: 450px;
+        margin-bottom: 48px;
+    }
+    
+    .account-card {
+        width: 280px;
+        height: 360px;
+        padding: 20px;
+    }
+    
+    .account-card.left {
+        transform: scale(0.8) translateX(-80px);
+    }
+    
+    .account-card.right {
+        transform: scale(0.8) translateX(80px);
+    }
+    
+    .nav-btn-left {
+        left: 8px;
+    }
+    
+    .nav-btn-right {
+        right: 8px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 16px;
+    }
+    
+    .account-card {
+        width: 260px;
+        height: 340px;
+    }
+    
+    .account-card.left {
+        transform: scale(0.75) translateX(-70px);
+    }
+    
+    .account-card.right {
+        transform: scale(0.75) translateX(70px);
+    }
+}
