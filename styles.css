@@ -18,6 +18,50 @@ body {
     padding: 0 20px;
 }
 
+/* Month Banner */
+.month-banner {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    border-radius: 12px;
+    margin: 24px 0;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
+}
+
+.month-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 24px;
+}
+
+.month-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.month-info {
+    flex: 1;
+}
+
+.month-label {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.month-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
 /* Header */
 .header {
     text-align: center;
@@ -375,6 +419,25 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .month-banner-content {
+        padding: 16px 20px;
+        gap: 12px;
+    }
+
+    .month-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .month-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .month-value {
+        font-size: 1.25rem;
+    }
+
     .header h1 {
         font-size: 2rem;
     }
@@ -415,6 +478,18 @@ body {
 @media (max-width: 480px) {
     .container {
         padding: 0 16px;
+    }
+
+    .month-banner {
+        margin: 16px 0;
+    }
+
+    .month-banner-content {
+        padding: 14px 16px;
+    }
+
+    .month-value {
+        font-size: 1.125rem;
     }
 
     .account-card {

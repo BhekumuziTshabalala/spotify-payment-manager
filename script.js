@@ -55,11 +55,28 @@ let currentIndex = 0;
 let isTransitioning = false;
 let autoAdvanceInterval;
 
+
 // DOM elements
 const carousel = document.getElementById('carousel');
 const indicators = document.getElementById('indicators');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
+const currentMonth = document.getElementById('currentMonth');
+
+//  current month name
+const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
+
+const today = new Date();
+const monthName = monthNames[today.getMonth()];
+
+const paymentModal = document.getElementById('paymentModal');
+const modalOverlay = document.getElementById('modalOverlay');
+
+currentMonth.innerText = monthName;
+
 
 // Initialize the carousel
 function init() {
@@ -296,5 +313,9 @@ function updateStats() {
 carousel.addEventListener('mouseenter', stopAutoAdvance);
 carousel.addEventListener('mouseleave', startAutoAdvance);
 
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', init);
+
+// CLose Payment Popup
+document.getElementById('closeModal').addEventListener('click', closePaymentModal);
