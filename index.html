@@ -7,58 +7,132 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Header -->
-        <header class="header">
-            <h1>Spotify Family</h1>
-            <p> because in the clurb we all family... </p>
-        </header>
+<div class="container">
+    <!-- Header -->
+    <header class="header">
+        <h1>Account Management</h1>
+        <p>Manage your billing accounts and payments with our intuitive carousel interface</p>
+    </header>
 
-        <!-- Carousel Container -->
-        <div class="carousel-wrapper">
-            <!-- Navigation Buttons -->
-            <button class="nav-btn nav-btn-left" id="prevBtn">
-                <svg width="24" height="24" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <polyline points="15,18 9,12 15,6"></polyline>
-                </svg>
-            </button>
+    <!-- Carousel Container -->
+    <div class="carousel-wrapper">
+        <!-- Navigation Buttons -->
+        <button class="nav-btn nav-btn-left" id="prevBtn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+        </button>
 
-            <button class="nav-btn nav-btn-right" id="nextBtn">
-                <svg width="24" height="24" viewBox="0 0 24 24"  stroke="currentColor" stroke-width="2">
-                    <polyline points="9,18 15,12 9,6"></polyline>
-                </svg>
-            </button>
+        <button class="nav-btn nav-btn-right" id="nextBtn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+            </svg>
+        </button>
 
-            <!-- Carousel -->
-            <div class="carousel" id="carousel">
-                <!-- Cards will be dynamically generated here -->
-            </div>
-
-            <!-- Indicators -->
-            <div class="indicators" id="indicators">
-                <!-- Indicators will be dynamically generated here -->
-            </div>
+        <!-- Carousel -->
+        <div class="carousel" id="carousel">
+            <!-- Cards will be dynamically generated here -->
         </div>
 
-        <!-- Stats Section -->
-        <div class="stats-section">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalAccounts">6</div>
-                    <div class="stat-label">Total Accounts</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="totalAmount">$1,218.47</div>
-                    <div class="stat-label">Total Amount</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="pendingPayments">3</div>
-                    <div class="stat-label">Pending Payments</div>
-                </div>
-            </div>
+        <!-- Indicators -->
+        <div class="indicators" id="indicators">
+            <!-- Indicators will be dynamically generated here -->
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Stats Section -->
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalAccounts">6</div>
+                <div class="stat-label">Total Accounts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalAmount">$1,218.47</div>
+                <div class="stat-label">Total Amount</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="pendingPayments">3</div>
+                <div class="stat-label">Pending Payments</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="modalOverlay"></div>
+<div class="payment-modal" id="paymentModal">
+    <div class="modal-header">
+        <h2>Payment Details</h2>
+        <button class="close-btn" id="closeModal">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div class="modal-content">
+        <div class="customer-info">
+            <h3 id="modalCustomerName">Customer Name</h3>
+            <p class="billing-period">Payment for December 2024</p>
+        </div>
+
+        <div class="payment-details">
+            <div class="detail-row">
+                <div class="detail-icon-wrapper">
+                    <svg class="detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                    </svg>
+                </div>
+                <div class="detail-info">
+                    <div class="detail-label">Bank Name</div>
+                    <div class="detail-value" id="modalBankName">Chase Bank</div>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-icon-wrapper">
+                    <svg class="detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                    </svg>
+                </div>
+                <div class="detail-info">
+                    <div class="detail-label">Account Number</div>
+                    <div class="detail-value" id="modalAccountNumber">****-****-****-1234</div>
+                </div>
+            </div>
+
+            <div class="detail-row amount-row">
+                <div class="detail-icon-wrapper">
+                    <svg class="detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                    </svg>
+                </div>
+                <div class="detail-info">
+                    <div class="detail-label">Amount Due</div>
+                    <div class="detail-value amount-value" id="modalAmountDue">$299.99</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="back-btn" id="closeModal">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
+                Back
+            </button>
+            <button class="confirm-payment-btn">
+                Confirm Payment
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

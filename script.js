@@ -151,9 +151,41 @@ function createCards() {
                 ${account.status === 'paid' ? 'View Receipt' : 'Pay Now'}
             </button>
         `;
+
+        // Add click event listener to the action button
+        const actionBtn = card.querySelector('.action-btn');
+        actionBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (account.status !== 'paid') {
+                openPaymentModal(account);
+            }
+        });
         
         carousel.appendChild(card);
     });
+}
+
+function closePaymentModal() {
+    paymentModal.classList.remove('active');
+    modalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+
+    // Resume auto-advance when modal is closed
+    startAutoAdvance();
+}
+
+function openPaymentModal(account) {
+    document.getElementById('modalCustomerName').textContent = account.name;
+    document.getElementById('modalBankName').textContent = account.bankName;
+    document.getElementById('modalAccountNumber').textContent = account.accountNumber;
+    document.getElementById('modalAmountDue').textContent = `$${account.amountDue.toFixed(2)}`;
+
+    paymentModal.classList.add('active');
+    modalOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Stop auto-advance when modal is open
+    stopAutoAdvance();
 }
 
 // Create indicator dots
