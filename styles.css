@@ -22,7 +22,7 @@ body {
 .month-banner {
     background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
     border-radius: 12px;
-    margin: 24px 0;
+    margin: 24px 0 0 0;
     box-shadow: 0 4px 6px rgba(59, 130, 246, 0.1);
 }
 
@@ -80,6 +80,46 @@ body {
     max-width: 500px;
     margin: 0 auto;
     line-height: 1.6;
+}
+
+/* Payment Note Banner */
+.payment-note-banner {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1px solid #f59e0b;
+    border-radius: 12px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 4px rgba(245, 158, 11, 0.1);
+}
+
+.payment-note-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+}
+
+.note-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: rgba(245, 158, 11, 0.2);
+    border-radius: 8px;
+    color: #d97706;
+    flex-shrink: 0;
+}
+
+.note-text {
+    color: #92400e;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.note-text strong {
+    color: #78350f;
+    font-weight: 600;
 }
 
 /* Carousel Wrapper */
@@ -343,6 +383,16 @@ body {
     background: #dc2626;
 }
 
+.action-btn.disabled {
+    background: #9ca3af;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+.action-btn.disabled:hover {
+    background: #9ca3af;
+    transform: none;
+}
 /* Indicators */
 .indicators {
     position: absolute;
@@ -424,6 +474,21 @@ body {
         gap: 12px;
     }
 
+    .payment-note-content {
+        padding: 14px 16px;
+        gap: 10px;
+    }
+
+    .note-icon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .note-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
     .month-icon {
         width: 40px;
         height: 40px;
@@ -478,6 +543,14 @@ body {
 @media (max-width: 480px) {
     .container {
         padding: 0 16px;
+    }
+
+    .payment-note-content {
+        padding: 12px 14px;
+    }
+
+    .note-text {
+        font-size: 0.8125rem;
     }
 
     .month-banner {

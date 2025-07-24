@@ -4,8 +4,8 @@ const sampleAccounts = [
         id: 1,
         name: 'Amanda Mayinje',
         avatar: 'assets/avatars/amanda.jpg',
-        billingMonths: ['February', 'August'],
-        amountDue: 299.99,
+        billingMonth: ['February', 'August'],
+
         status: 'pending'
     },
     {
@@ -13,7 +13,7 @@ const sampleAccounts = [
         name: 'Marc-Anthony Jones',
         avatar: 'assets/avatars/marc.jpg',
         billingMonth: ['March', 'September'],
-        amountDue: 149.50,
+
         status: 'paid'
     },
     {
@@ -21,7 +21,7 @@ const sampleAccounts = [
         name: 'Keabetswe Motloung',
         avatar: 'assets/avatars/kea.jpg',
         billingMonth: ['April', 'October'],
-        amountDue: 89.99,
+
         status: 'overdue'
     },
     {
@@ -29,7 +29,7 @@ const sampleAccounts = [
         name: 'Gabrielle Chitamu',
         avatar: 'assets/avatars/gabby.jpg',
         billingMonth:  ['May', 'November'],
-        amountDue: 199.00,
+
         status: 'pending'
     },
     {
@@ -37,15 +37,15 @@ const sampleAccounts = [
         name: 'Sinethemba Vilakazi',
         avatar: 'assets/avatars/sinethemba.jpg',
         billingMonth: ['June', 'December'],
-        amountDue: 349.99,
+
         status: 'paid'
     },
     {
         id: 6,
         name: 'Bhekumuzi Tshabalala',
         avatar: 'assets/avatars/muzi.jpg',
-        billingMonths:  ['January', 'July'],
-        amountDue: 129.99,
+        billingMonth:  ['January', 'July'],
+
         status: 'pending'
     }
 ];
@@ -91,28 +91,28 @@ function init() {
     updateCarousel();
     // updateStats();
     startAutoAdvance();
-    
+
     // Event listeners
     prevBtn.addEventListener('click', prevSlide);
     nextBtn.addEventListener('click', nextSlide);
-    
+
     // Touch/swipe support
     let startX = 0;
     let endX = 0;
-    
+
     carousel.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
     });
-    
+
     carousel.addEventListener('touchend', (e) => {
         endX = e.changedTouches[0].clientX;
         handleSwipe();
     });
-    
+
     function handleSwipe() {
         const threshold = 50;
         const diff = startX - endX;
-        
+
         if (Math.abs(diff) > threshold) {
             if (diff > 0) {
                 nextSlide();
@@ -126,8 +126,16 @@ function init() {
 // Create account cards
 function createCards() {
     carousel.innerHTML = '';
-    
+
+    // Get current month name
+    const currentMonthName = monthNames[today.getMonth()];
+
     sampleAccounts.forEach((account, index) => {
+        // Check if current month is in the account's billing months
+        const isPaymentMonth = account.billingMonth.includes(currentMonthName);
+        const buttonClass = isPaymentMonth ? account.status : 'disabled';
+        const buttonText = isPaymentMonth ? 'Pay Now' : 'Not Due';
+
         const card = document.createElement('div');
         card.className = 'account-card';
         card.innerHTML = `
@@ -144,9 +152,7 @@ function createCards() {
             
             <h3 class="card-name">${account.name}</h3>
             
-            <div class="status-badge">
-                <span class="badge ${account.status}">${account.status}</span>
-            </div>
+            
             
             <div class="billing-details">
                 <div class="detail-item">
@@ -170,8 +176,8 @@ function createCards() {
                 </div>
             </div>
             
-            <button class="action-btn ${account.status}">
-                ${account.status === 'paid' ? 'View Receipt' : 'Pay Now'}
+            <button class="action-btn ${buttonClass}" ${!isPaymentMonth ? 'disabled' : ''}>
+                ${buttonText}
             </button>
         `;
 
@@ -179,11 +185,11 @@ function createCards() {
         const actionBtn = card.querySelector('.action-btn');
         actionBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (account.status !== 'paid') {
+            if (isPaymentMonth && account.status !== 'paid') {
                 openPaymentModal(account);
             }
         });
-        
+
         carousel.appendChild(card);
     });
 }
@@ -214,7 +220,7 @@ function openPaymentModal(account) {
 // Create indicator dots
 function createIndicators() {
     indicators.innerHTML = '';
-    
+
     sampleAccounts.forEach((_, index) => {
         const indicator = document.createElement('button');
         indicator.className = 'indicator';
@@ -227,10 +233,10 @@ function createIndicators() {
 function updateCarousel() {
     const cards = carousel.querySelectorAll('.account-card');
     const indicatorDots = indicators.querySelectorAll('.indicator');
-    
+
     cards.forEach((card, index) => {
         card.classList.remove('left', 'center', 'right');
-        
+
         if (index === currentIndex) {
             card.classList.add('center');
         } else if (index === getPrevIndex()) {
@@ -239,7 +245,7 @@ function updateCarousel() {
             card.classList.add('right');
         }
     });
-    
+
     // Update indicators
     indicatorDots.forEach((dot, index) => {
         dot.classList.toggle('active', index === currentIndex);
@@ -249,11 +255,11 @@ function updateCarousel() {
 // Navigation functions
 function nextSlide() {
     if (isTransitioning) return;
-    
+
     isTransitioning = true;
     currentIndex = (currentIndex + 1) % sampleAccounts.length;
     updateCarousel();
-    
+
     setTimeout(() => {
         isTransitioning = false;
     }, 500);
@@ -261,11 +267,11 @@ function nextSlide() {
 
 function prevSlide() {
     if (isTransitioning) return;
-    
+
     isTransitioning = true;
     currentIndex = (currentIndex - 1 + sampleAccounts.length) % sampleAccounts.length;
     updateCarousel();
-    
+
     setTimeout(() => {
         isTransitioning = false;
     }, 500);
@@ -273,11 +279,11 @@ function prevSlide() {
 
 function goToSlide(index) {
     if (isTransitioning || index === currentIndex) return;
-    
+
     isTransitioning = true;
     currentIndex = index;
     updateCarousel();
-    
+
     setTimeout(() => {
         isTransitioning = false;
     }, 500);
@@ -309,7 +315,7 @@ function stopAutoAdvance() {
 function updateStats() {
     const totalAmount = sampleAccounts.reduce((sum, account) => sum + account.amountDue, 0);
     const pendingCount = sampleAccounts.filter(account => account.status === 'pending').length;
-    
+
     document.getElementById('totalAccounts').textContent = sampleAccounts.length;
     document.getElementById('totalAmount').textContent = `$${totalAmount.toFixed(2)}`;
     document.getElementById('pendingPayments').textContent = pendingCount;
