@@ -50,6 +50,12 @@ const sampleAccounts = [
     }
 ];
 
+const bankingDetails = {
+    bankName : "Tyme Bank",
+    accountNumber : "51016280903",
+    subcriptionAmount : "105"
+}
+
 // Carousel state
 let currentIndex = 0;
 let isTransitioning = false;
@@ -83,7 +89,7 @@ function init() {
     createCards();
     createIndicators();
     updateCarousel();
-    updateStats();
+    // updateStats();
     startAutoAdvance();
     
     // Event listeners
@@ -193,9 +199,9 @@ function closePaymentModal() {
 
 function openPaymentModal(account) {
     document.getElementById('modalCustomerName').textContent = account.name;
-    document.getElementById('modalBankName').textContent = account.bankName;
-    document.getElementById('modalAccountNumber').textContent = account.accountNumber;
-    document.getElementById('modalAmountDue').textContent = `$${account.amountDue.toFixed(2)}`;
+    document.getElementById('modalBankName').textContent = bankingDetails.bankName;
+    document.getElementById('modalAccountNumber').textContent = bankingDetails.accountNumber;
+    document.getElementById('modalAmountDue').textContent = `R${bankingDetails.subcriptionAmount}`;
 
     paymentModal.classList.add('active');
     modalOverlay.classList.add('active');
