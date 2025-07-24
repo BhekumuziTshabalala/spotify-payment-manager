@@ -130,7 +130,18 @@ function createCards() {
     // Get current month name
     const currentMonthName = monthNames[today.getMonth()];
 
-    sampleAccounts.forEach((account, index) => {
+    let orderedAccounts = [...sampleAccounts];
+    const currentMonthAccountIndex = orderedAccounts.findIndex(account =>
+        account.billingMonth.includes(currentMonthName)
+    );
+
+    if (currentMonthAccountIndex !== -1) {
+        // If a matching account is found, move it to the beginning
+        const currentAccount = orderedAccounts.splice(currentMonthAccountIndex, 1)[0];
+        orderedAccounts.unshift(currentAccount);
+    }
+
+    orderedAccounts.forEach((account, index) => {
         // Check if current month is in the account's billing months
         const isPaymentMonth = account.billingMonth.includes(currentMonthName);
         const buttonClass = isPaymentMonth ? account.status : 'disabled';
