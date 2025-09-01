@@ -53,7 +53,7 @@ const sampleAccounts = [
 const bankingDetails = {
     bankName : "Tyme Bank",
     accountNumber : "51016280903",
-    subcriptionAmount : "125.00"
+    subscriptionAmount : "125.00"
 }
 
 // Carousel state
@@ -182,7 +182,7 @@ function createCards() {
                     </svg>
                     <div class="detail-content">
                         <div class="detail-label">Amount Due</div>
-                        <div class="detail-value amount">R${bankingDetails.subcriptionAmount}</div>  
+                        <div class="detail-value amount">R${bankingDetails.subscriptionAmount}</div>  
                     </div>
                 </div>
             </div>
@@ -227,7 +227,7 @@ function openPaymentModal(account) {
     document.getElementById('modalCustomerName').textContent = account.name;
     document.getElementById('modalBankName').textContent = bankingDetails.bankName;
     document.getElementById('modalAccountNumber').textContent = bankingDetails.accountNumber;
-    document.getElementById('modalAmountDue').textContent = `R${bankingDetails.subcriptionAmount}`;
+    document.getElementById('modalAmountDue').textContent = `R${bankingDetails.subscriptionAmount}`;
 
     updateBillingPeriod();
 
@@ -343,7 +343,17 @@ carousel.addEventListener('mouseleave', startAutoAdvance);
 
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
 
+    const closeBtn = document.getElementById('closeModal');
+    if (closeBtn) closeBtn.addEventListener('click', closePaymentModal);
+
+    if (modalOverlay) modalOverlay.addEventListener('click', closePaymentModal);
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closePaymentModal();
+    });
+});
 // CLose Payment Popup
 document.getElementById('closeModal').addEventListener('click', closePaymentModal);
