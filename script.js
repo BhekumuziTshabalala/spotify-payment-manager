@@ -53,7 +53,7 @@ const sampleAccounts = [
 const bankingDetails = {
     bankName : "Tyme Bank",
     accountNumber : "51016280903",
-    subcriptionAmount : "105"
+    subcriptionAmount : "125.00"
 }
 
 // Carousel state
