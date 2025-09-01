@@ -177,12 +177,12 @@ function createCards() {
                 </div>
                 
                 <div class="detail-item">
-                    <svg class="detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="detail-icon"  stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
                     </svg>
                     <div class="detail-content">
                         <div class="detail-label">Amount Due</div>
-                        <div class="detail-value amount">R105</div>
+                        <div class="detail-value amount">R${bankingDetails.subcriptionAmount}</div>  
                     </div>
                 </div>
             </div>
@@ -214,17 +214,29 @@ function closePaymentModal() {
     startAutoAdvance();
 }
 
+function updateBillingPeriod() {
+    const billingPeriodElement = document.querySelector(".billing-period");
+    const currentDate = new Date();
+    const options = { year: "numeric", month: "long" };
+    const formattedDate = currentDate.toLocaleDateString("en-US", options);
+
+    billingPeriodElement.textContent = `Payment for ${formattedDate}`;
+}
+
 function openPaymentModal(account) {
     document.getElementById('modalCustomerName').textContent = account.name;
     document.getElementById('modalBankName').textContent = bankingDetails.bankName;
     document.getElementById('modalAccountNumber').textContent = bankingDetails.accountNumber;
     document.getElementById('modalAmountDue').textContent = `R${bankingDetails.subcriptionAmount}`;
 
+    updateBillingPeriod();
+
     paymentModal.classList.add('active');
     modalOverlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 
     // Stop auto-advance when modal is open
+
     stopAutoAdvance();
 }
 
@@ -323,14 +335,7 @@ function stopAutoAdvance() {
 }
 
 // Update statistics
-function updateStats() {
-    const totalAmount = sampleAccounts.reduce((sum, account) => sum + account.amountDue, 0);
-    const pendingCount = sampleAccounts.filter(account => account.status === 'pending').length;
 
-    document.getElementById('totalAccounts').textContent = sampleAccounts.length;
-    document.getElementById('totalAmount').textContent = `$${totalAmount.toFixed(2)}`;
-    document.getElementById('pendingPayments').textContent = pendingCount;
-}
 
 // Pause auto-advance on hover
 carousel.addEventListener('mouseenter', stopAutoAdvance);
