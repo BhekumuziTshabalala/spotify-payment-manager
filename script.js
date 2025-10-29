@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const bankingDetails = {
-        bankName: "Tyme Bank",
-        accountNumber: "51016280903",
+        bankName: "FNB",
+        accountNumber: "62926856264",
         subscriptionAmount: "125.00"
     };
 
