@@ -86,13 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentMonthName = monthNames[today.getMonth()];
 
         let orderedAccounts = [...sampleAccounts];
-        const currentMonthAccountIndex = orderedAccounts.findIndex(account =>
+
+        const currentMonthAccountIndex = sampleAccounts.findIndex(account =>
             account.billingMonth.includes(currentMonthName)
         );
 
-        if (currentMonthAccountIndex > 0) {
-            const currentAccount = orderedAccounts.splice(currentMonthAccountIndex, 1)[0];
-            orderedAccounts.unshift(currentAccount);
+        if (currentMonthAccountIndex !== -1) {
+            currentIndex = currentMonthAccountIndex;
         }
 
         orderedAccounts.forEach((account) => {
@@ -206,15 +206,58 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!carousel || !indicators) return;
         const cards = carousel.querySelectorAll('.account-card');
         const indicatorDots = indicators.querySelectorAll('.indicator');
+        const totalCards = cards.length;
 
         cards.forEach((card, index) => {
-            card.classList.remove('left', 'center', 'right');
-            if (index === currentIndex) {
-                card.classList.add('center');
-            } else if (index === (currentIndex - 1 + cards.length) % cards.length) {
-                card.classList.add('left');
-            } else if (index === (currentIndex + 1) % cards.length) {
-                card.classList.add('right');
+            // Calculate relative position in the circle
+            let offset = (index - currentIndex) % totalCards;
+            if (offset < -totalCards / 2) offset += totalCards;
+            if (offset > totalCards / 2) offset -= totalCards;
+
+            // Determine visual state based on offset
+            card.style.transition = isTransitioning ? 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+
+            if (offset === 0) {
+                // Center
+                card.style.transform = 'translateX(0) scale(1)';
+                card.style.zIndex = '30';
+                card.style.opacity = '1';
+                card.style.filter = 'blur(0)';
+                card.style.pointerEvents = 'auto';
+            } else if (offset === 1) {
+                // Right
+                card.style.transform = 'translateX(120px) scale(0.85)';
+                card.style.zIndex = '20';
+                card.style.opacity = '0.8';
+                card.style.filter = 'blur(1px)';
+                card.style.pointerEvents = 'none';
+            } else if (offset === -1) {
+                // Left
+                card.style.transform = 'translateX(-120px) scale(0.85)';
+                card.style.zIndex = '20';
+                card.style.opacity = '0.8';
+                card.style.filter = 'blur(1px)';
+                card.style.pointerEvents = 'none';
+            } else if (offset === 2) {
+                // Far Right
+                card.style.transform = 'translateX(200px) scale(0.7)';
+                card.style.zIndex = '10';
+                card.style.opacity = '0';
+                card.style.filter = 'blur(2px)';
+                card.style.pointerEvents = 'none';
+            } else if (offset === -2) {
+                // Far Left
+                card.style.transform = 'translateX(-200px) scale(0.7)';
+                card.style.zIndex = '10';
+                card.style.opacity = '0';
+                card.style.filter = 'blur(2px)';
+                card.style.pointerEvents = 'none';
+            } else {
+                // Hidden behind
+                card.style.transform = 'translateX(0) scale(0.5)';
+                card.style.zIndex = '0';
+                card.style.opacity = '0';
+                card.style.pointerEvents = 'none';
             }
         });
 

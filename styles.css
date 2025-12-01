@@ -198,31 +198,7 @@ body {
     cursor: pointer;
 }
 
-.account-card.center {
-    transform: scale(1) translateX(0);
-    z-index: 30;
-    filter: blur(0);
-    opacity: 1;
-}
-
-.account-card.left {
-    transform: scale(0.85) translateX(-96px);
-    z-index: 10;
-    filter: blur(2px);
-    opacity: 0.75;
-}
-
-.account-card.right {
-    transform: scale(0.85) translateX(96px);
-    z-index: 10;
-    filter: blur(2px);
-    opacity: 0.75;
-}
-
-.account-card.left:hover,
-.account-card.right:hover {
-    opacity: 0.9;
-}
+/* Dynamic styles handled in JS */
 
 /* Avatar Section */
 .avatar-section {
