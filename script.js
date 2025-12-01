@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Sinethemba Vilakazi',
             avatar: 'assets/avatars/sinethemba.jpg',
             billingMonth: ['June', 'December'],
-            status: 'paid'
+            status: 'pending'
         },
         {
             id: 6,
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const bankingDetails = {
-        bankName: "FNB",
-        accountNumber: "62926856264",
+        bankName: "Telkom",
+        accountNumber: "+27680546214",
         subscriptionAmount: "125.00"
     };
 
@@ -98,7 +98,10 @@ document.addEventListener('DOMContentLoaded', () => {
         orderedAccounts.forEach((account) => {
             const isPaymentMonth = account.billingMonth.includes(currentMonthName);
             const buttonClass = isPaymentMonth ? account.status : 'disabled';
-            const buttonText = isPaymentMonth ? 'Pay Now' : 'Not Due';
+            let buttonText = 'Not Due';
+            if (isPaymentMonth) {
+                buttonText = account.status === 'paid' ? 'Paid' : 'Pay Now';
+            }
 
             const card = document.createElement('div');
             card.className = 'account-card';
@@ -134,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
                 </div>
-                <button class="action-btn ${buttonClass}" ${!isPaymentMonth ? 'disabled' : ''}>
+                <button class="action-btn ${buttonClass}" ${(!isPaymentMonth || account.status === 'paid') ? 'disabled' : ''}>
                     ${buttonText}
                 </button>
             `;
