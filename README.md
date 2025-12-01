@@ -12,9 +12,8 @@ This is a **3D Carousel of Accountability**. It visualizes who in the squad is p
 
 - **The Carousel:** Spin through the faces of your "family" members. Admire their avatars. Judge their payment status.
 - **Status Indicators:**
-  - ✅ **Paid:** You are a golden child. May your playlists be ever fire.
-  - ⏳ **Pending:** We're watching you. The month is young, but our patience is thin.
-  - 🚨 **Overdue:** *Bombastic side eye.* You are the reason we can't have nice things.
+  - ✅ **Pay Now:** You are a golden child. May your playlists be ever fire.
+  - ⏳ **Not Due:** Relax, it's not your month.
 - **Payment Portal:** A modal that politely (but firmly) asks for money. It even calculates the amount due so you can't pretend you "didn't know."
 - **Responsive Design:** Shaming works on mobile, tablet, and desktop. There is no escape.
 
@@ -27,12 +26,12 @@ This is a **3D Carousel of Accountability**. It visualizes who in the squad is p
 
 ## The Squad
 
-*   **Amanda:** Pending (Get it together, Amanda)
-*   **Marc-Anthony:** Paid (The MVP)
-*   **Keabetswe:** Overdue (We need to talk)
-*   **Gabrielle:** Pending
-*   **Sinethemba:** Paid
-*   **Bhekumuzi:** Pending
+*   **Amanda:** 
+*   **Marc-Anthony:** 
+*   **Keabetswe:** 
+*   **Gabrielle:** 
+*   **Sinethemba:** 
+*   **Bhekumuzi:** 
 
 ## Disclaimer
 
