@@ -26,12 +26,12 @@ This is a **3D Carousel of Accountability**. It visualizes who in the squad is p
 
 ## The Squad
 
-*   **Amanda:** 
-*   **Marc-Anthony:** 
-*   **Keabetswe:** 
-*   **Gabrielle:** 
-*   **Sinethemba:** 
-*   **Bhekumuzi:** 
+*   **Amanda** 
+*   **Marc-Anthony** 
+*   **Keabetswe** 
+*   **Gabrielle** 
+*   **Sinethemba** 
+*   **Bhekumuzi** 
 
 ## Disclaimer
 
