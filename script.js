@@ -85,18 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const currentMonthName = monthNames[today.getMonth()];
 
-        let orderedAccounts = [...sampleAccounts];
+        // Generate 12 cards, one for each month
+        monthNames.forEach((month, index) => {
+            // Find the account responsible for this month
+            const account = sampleAccounts.find(acc => acc.billingMonth.includes(month));
 
-        const currentMonthAccountIndex = sampleAccounts.findIndex(account =>
-            account.billingMonth.includes(currentMonthName)
-        );
+            if (!account) return; // Should not happen if data is complete
 
-        if (currentMonthAccountIndex !== -1) {
-            currentIndex = currentMonthAccountIndex;
-        }
-
-        orderedAccounts.forEach((account) => {
-            const isPaymentMonth = account.billingMonth.includes(currentMonthName);
+            const isPaymentMonth = month === currentMonthName;
             const buttonClass = isPaymentMonth ? account.status : 'disabled';
             let buttonText = 'Not Due';
             if (isPaymentMonth) {
@@ -120,11 +116,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="billing-details">
                     <div class="detail-item">
                         <svg class="detail-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                         </svg>
                         <div class="detail-content">
                             <div class="detail-label">Billing Period</div>
-                            <div class="detail-value">${account.billingMonth.join(', ')}</div>
+                            <div class="detail-value">${month}</div>
                         </div>
                     </div>
                     <div class="detail-item">
@@ -153,6 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             carousel.appendChild(card);
         });
+
+        // Set initial index to current month
+        currentIndex = today.getMonth();
+
         updateCarousel();
     }
 
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function createIndicators() {
         if (!indicators) return;
         indicators.innerHTML = '';
-        sampleAccounts.forEach((_, index) => {
+        monthNames.forEach((_, index) => {
             const indicator = document.createElement('button');
             indicator.className = 'indicator';
             indicator.addEventListener('click', () => goToSlide(index));
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function nextSlide() {
         if (isTransitioning) return;
         isTransitioning = true;
-        currentIndex = (currentIndex + 1) % sampleAccounts.length;
+        currentIndex = (currentIndex + 1) % monthNames.length;
         updateCarousel();
         setTimeout(() => { isTransitioning = false; }, 500);
     }
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function prevSlide() {
         if (isTransitioning) return;
         isTransitioning = true;
-        currentIndex = (currentIndex - 1 + sampleAccounts.length) % sampleAccounts.length;
+        currentIndex = (currentIndex - 1 + monthNames.length) % monthNames.length;
         updateCarousel();
         setTimeout(() => { isTransitioning = false; }, 500);
     }
