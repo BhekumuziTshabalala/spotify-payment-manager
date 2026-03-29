@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const bankingDetails = {
-        bankName: "Telkom",
-        accountNumber: "+27680546214",
+        bankName: "Vodacom",
+        accountNumber: "+27726611792",
         subscriptionAmount: "125.00"
     };
 
