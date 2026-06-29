@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Sample account data
     const sampleAccounts = [
-        
-          {
+        {
             id: 1,
             name: 'Bhekumuzi Tshabalala',
             avatar: 'assets/avatars/muzi.jpg',
-            billingMonth: ['January', 'July'],
+            billingMonth: ['February', 'August'],
             status: 'pending'
         },
         {
@@ -41,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 6,
             name: 'Amanda Mayinje',
             avatar: 'assets/avatars/amanda.jpg',
-            billingMonth: ['February', 'August'],
+            billingMonth: ['January', 'July'],
             status: 'pending'
         }
     ];
@@ -56,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIndex = 0;
     let isTransitioning = false;
     let autoAdvanceInterval;
+    let selectedAccountForPayment = null;
 
     // DOM elements
     const carousel = document.getElementById('carousel');
@@ -63,11 +63,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const currentMonthEl = document.getElementById('currentMonth');
+    
+    // Modal elements
     const paymentModal = document.getElementById('paymentModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const closeBtn = document.getElementById('closeModal');
+    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+    const confirmPaymentBtn = document.getElementById('confirmPaymentBtn');
 
-    //  current month name
+    // Theme elements
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    const themeToggleText = document.getElementById('themeToggleText');
+
+    // Month Names mapping
     const monthNames = [
         "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -79,7 +87,55 @@ document.addEventListener('DOMContentLoaded', () => {
         currentMonthEl.innerText = monthName;
     }
 
-    // Create account cards
+    // ==========================================================================
+    // Theme Management (Light / Dark / System Preferences)
+    // ==========================================================================
+    function applyTheme(theme) {
+        if (theme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            if (themeToggleText) themeToggleText.textContent = 'Dark';
+        } else if (theme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            if (themeToggleText) themeToggleText.textContent = 'Light';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            localStorage.setItem('theme', 'system');
+            const systemIsDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (themeToggleText) themeToggleText.textContent = `System (${systemIsDark ? 'Dark' : 'Light'})`;
+        }
+    }
+
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'system';
+        applyTheme(savedTheme);
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                const currentTheme = localStorage.getItem('theme') || 'system';
+                if (currentTheme === 'system') {
+                    applyTheme('light');
+                } else if (currentTheme === 'light') {
+                    applyTheme('dark');
+                } else {
+                    applyTheme('system');
+                }
+            });
+        }
+
+        // Listen for OS system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            const currentTheme = localStorage.getItem('theme') || 'system';
+            if (currentTheme === 'system') {
+                applyTheme('system');
+            }
+        });
+    }
+
+    // ==========================================================================
+    // Carousel Core Logic
+    // ==========================================================================
     function createCards() {
         if (!carousel) return;
         carousel.innerHTML = '';
@@ -91,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Find the account responsible for this month
             const account = sampleAccounts.find(acc => acc.billingMonth.includes(month));
 
-            if (!account) return; // Should not happen if data is complete
+            if (!account) return;
 
             const isPaymentMonth = month === currentMonthName;
             const buttonClass = isPaymentMonth ? account.status : 'disabled';
@@ -100,8 +156,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 buttonText = account.status === 'paid' ? 'Paid' : 'Pay Now';
             }
 
+            // Create account card structure
             const card = document.createElement('div');
             card.className = 'account-card';
+            
+            // Build card inner HTML
             card.innerHTML = `
                 <div class="avatar-section">
                     <div class="avatar-container">
@@ -139,6 +198,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
             `;
 
+            // Support click on side cards to focus them
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.action-btn')) return;
+                if (index !== currentIndex) {
+                    goToSlide(index);
+                    startAutoAdvance(); // Reset timer
+                }
+            });
+
+            // Action button logic
             const actionBtn = card.querySelector('.action-btn');
             if (actionBtn) {
                 actionBtn.addEventListener('click', (e) => {
@@ -153,54 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Set initial index to current month
         currentIndex = today.getMonth();
-
         updateCarousel();
-    }
-
-    function closePaymentModal() {
-        if (paymentModal && modalOverlay) {
-            paymentModal.classList.remove('active');
-            modalOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-            startAutoAdvance();
-        }
-    }
-
-    function updateBillingPeriod() {
-        // Find the billing period element specifically inside the payment modal
-        const billingPeriodElement = document.querySelector("#paymentModal .billing-period");
-        if (billingPeriodElement) {
-            const currentDate = new Date();
-            const options = { year: "numeric", month: "long" };
-            const formattedDate = currentDate.toLocaleDateString("en-US", options);
-            billingPeriodElement.textContent = `Payment for ${formattedDate}`;
-        }
-    }
-
-    function openPaymentModal(account) {
-        document.getElementById('modalCustomerName').textContent = account.name;
-        document.getElementById('modalBankName').textContent = bankingDetails.bankName;
-        document.getElementById('modalAccountNumber').textContent = bankingDetails.accountNumber;
-        document.getElementById('modalAmountDue').textContent = `R${bankingDetails.subscriptionAmount}`;
-        updateBillingPeriod();
-
-        if (paymentModal && modalOverlay) {
-            paymentModal.classList.add('active');
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            stopAutoAdvance();
-        }
-    }
-
-    function createIndicators() {
-        if (!indicators) return;
-        indicators.innerHTML = '';
-        monthNames.forEach((_, index) => {
-            const indicator = document.createElement('button');
-            indicator.className = 'indicator';
-            indicator.addEventListener('click', () => goToSlide(index));
-            indicators.appendChild(indicator);
-        });
     }
 
     function updateCarousel() {
@@ -215,55 +237,75 @@ document.addEventListener('DOMContentLoaded', () => {
             if (offset < -totalCards / 2) offset += totalCards;
             if (offset > totalCards / 2) offset -= totalCards;
 
-            // Determine visual state based on offset
-            card.style.transition = isTransitioning ? 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none';
+            // Apply transition speed variables and settings
+            card.style.transition = isTransitioning ? 'all var(--transition-speed) var(--transition-curve)' : 'none';
 
             if (offset === 0) {
-                // Center
-                card.style.transform = 'translateX(0) scale(1)';
+                // Center Active Card
+                card.style.transform = 'translateX(0) translateZ(0) scale(1)';
                 card.style.zIndex = '30';
                 card.style.opacity = '1';
                 card.style.filter = 'blur(0)';
                 card.style.pointerEvents = 'auto';
+                card.classList.add('active');
             } else if (offset === 1) {
-                // Right
-                card.style.transform = 'translateX(120px) scale(0.85)';
+                // Next Card (Right)
+                card.style.transform = 'translateX(var(--card-translate-x)) translateZ(-100px) scale(var(--card-scale-side))';
                 card.style.zIndex = '20';
-                card.style.opacity = '0.8';
-                card.style.filter = 'blur(1px)';
-                card.style.pointerEvents = 'none';
+                card.style.opacity = 'var(--card-opacity-side)';
+                card.style.filter = 'blur(var(--card-blur-side))';
+                card.style.pointerEvents = 'auto';
+                card.classList.remove('active');
             } else if (offset === -1) {
-                // Left
-                card.style.transform = 'translateX(-120px) scale(0.85)';
+                // Prev Card (Left)
+                card.style.transform = 'translateX(calc(-1 * var(--card-translate-x))) translateZ(-100px) scale(var(--card-scale-side))';
                 card.style.zIndex = '20';
-                card.style.opacity = '0.8';
-                card.style.filter = 'blur(1px)';
-                card.style.pointerEvents = 'none';
+                card.style.opacity = 'var(--card-opacity-side)';
+                card.style.filter = 'blur(var(--card-blur-side))';
+                card.style.pointerEvents = 'auto';
+                card.classList.remove('active');
             } else if (offset === 2) {
-                // Far Right
-                card.style.transform = 'translateX(200px) scale(0.7)';
+                // Far Right Card
+                card.style.transform = 'translateX(calc(1.6 * var(--card-translate-x))) translateZ(-200px) scale(calc(var(--card-scale-side) - 0.1))';
                 card.style.zIndex = '10';
                 card.style.opacity = '0';
-                card.style.filter = 'blur(2px)';
+                card.style.filter = 'blur(calc(var(--card-blur-side) + 1px))';
                 card.style.pointerEvents = 'none';
+                card.classList.remove('active');
             } else if (offset === -2) {
-                // Far Left
-                card.style.transform = 'translateX(-200px) scale(0.7)';
+                // Far Left Card
+                card.style.transform = 'translateX(calc(-1.6 * var(--card-translate-x))) translateZ(-200px) scale(calc(var(--card-scale-side) - 0.1))';
                 card.style.zIndex = '10';
                 card.style.opacity = '0';
-                card.style.filter = 'blur(2px)';
+                card.style.filter = 'blur(calc(var(--card-blur-side) + 1px))';
                 card.style.pointerEvents = 'none';
+                card.classList.remove('active');
             } else {
-                // Hidden behind
-                card.style.transform = 'translateX(0) scale(0.5)';
+                // Hidden completely
+                card.style.transform = 'translateX(0) translateZ(-300px) scale(0.5)';
                 card.style.zIndex = '0';
                 card.style.opacity = '0';
                 card.style.pointerEvents = 'none';
+                card.classList.remove('active');
             }
         });
 
         indicatorDots.forEach((dot, index) => {
             dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    function createIndicators() {
+        if (!indicators) return;
+        indicators.innerHTML = '';
+        monthNames.forEach((_, index) => {
+            const indicator = document.createElement('button');
+            indicator.className = 'indicator';
+            indicator.addEventListener('click', () => {
+                goToSlide(index);
+                startAutoAdvance(); // Reset timer
+            });
+            indicators.appendChild(indicator);
         });
     }
 
@@ -291,6 +333,66 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { isTransitioning = false; }, 500);
     }
 
+    // ==========================================================================
+    // Payment Modal Controls
+    // ==========================================================================
+    function updateBillingPeriod() {
+        const billingPeriodElement = document.querySelector("#paymentModal .billing-period");
+        if (billingPeriodElement) {
+            const currentDate = new Date();
+            const options = { year: "numeric", month: "long" };
+            const formattedDate = currentDate.toLocaleDateString("en-US", options);
+            billingPeriodElement.textContent = `Payment for ${formattedDate}`;
+        }
+    }
+
+    function openPaymentModal(account) {
+        selectedAccountForPayment = account;
+        document.getElementById('modalCustomerName').textContent = account.name;
+        document.getElementById('modalBankName').textContent = bankingDetails.bankName;
+        document.getElementById('modalAccountNumber').textContent = bankingDetails.accountNumber;
+        document.getElementById('modalAmountDue').textContent = `R${bankingDetails.subscriptionAmount}`;
+        updateBillingPeriod();
+
+        if (paymentModal && modalOverlay) {
+            paymentModal.classList.add('active');
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            stopAutoAdvance();
+        }
+    }
+
+    function closePaymentModal() {
+        selectedAccountForPayment = null;
+        if (paymentModal && modalOverlay) {
+            paymentModal.classList.remove('active');
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            startAutoAdvance();
+        }
+    }
+
+    function processPayment() {
+        if (!selectedAccountForPayment) return;
+
+        // Update the account status
+        selectedAccountForPayment.status = 'paid';
+
+        // Close the modal
+        closePaymentModal();
+
+
+        // Re-generate the carousel cards to reflect new status
+        // Keep the current slide index
+        const saveIndex = currentIndex;
+        createCards();
+        currentIndex = saveIndex;
+        updateCarousel();
+    }
+
+    // ==========================================================================
+    // Auto-Advance Timer Controls
+    // ==========================================================================
     function startAutoAdvance() {
         clearInterval(autoAdvanceInterval);
         autoAdvanceInterval = setInterval(() => {
@@ -302,37 +404,69 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(autoAdvanceInterval);
     }
 
-    // Initialize the application
+    // ==========================================================================
+    // Initialization
+    // ==========================================================================
     function init() {
         if (!carousel) return;
+
+        // Initialize Theme, Cards, and Indicators
+        initTheme();
         createCards();
         createIndicators();
         updateCarousel();
         startAutoAdvance();
 
-        // Event listeners
-        if (prevBtn) prevBtn.addEventListener('click', prevSlide);
-        if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-        if (closeBtn) closeBtn.addEventListener('click', closePaymentModal);
-        if (modalOverlay) modalOverlay.addEventListener('click', closePaymentModal);
+        // Event listeners - Navigation
+        if (prevBtn) prevBtn.addEventListener('click', () => {
+            prevSlide();
+            startAutoAdvance();
+        });
+        
+        if (nextBtn) nextBtn.addEventListener('click', () => {
+            nextSlide();
+            startAutoAdvance();
+        });
 
+        // Event listeners - Modal
+        if (closeBtn) closeBtn.addEventListener('click', closePaymentModal);
+        if (cancelPaymentBtn) cancelPaymentBtn.addEventListener('click', closePaymentModal);
+        if (modalOverlay) modalOverlay.addEventListener('click', closePaymentModal);
+        if (confirmPaymentBtn) confirmPaymentBtn.addEventListener('click', processPayment);
+
+        // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && paymentModal.classList.contains('active')) {
                 closePaymentModal();
+            } else if (e.key === 'ArrowRight' && !paymentModal.classList.contains('active')) {
+                nextSlide();
+                startAutoAdvance();
+            } else if (e.key === 'ArrowLeft' && !paymentModal.classList.contains('active')) {
+                prevSlide();
+                startAutoAdvance();
             }
         });
 
+        // Touch swipe gestures
         let startX = 0;
-        carousel.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; });
+        carousel.addEventListener('touchstart', (e) => { 
+            startX = e.touches[0].clientX; 
+        }, { passive: true });
+        
         carousel.addEventListener('touchend', (e) => {
             const endX = e.changedTouches[0].clientX;
             const diff = startX - endX;
             if (Math.abs(diff) > 50) {
-                if (diff > 0) nextSlide();
-                else prevSlide();
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+                startAutoAdvance(); // Reset timer on manual swipe
             }
-        });
+        }, { passive: true });
 
+        // Hover auto-advance suspension
         carousel.addEventListener('mouseenter', stopAutoAdvance);
         carousel.addEventListener('mouseleave', startAutoAdvance);
     }

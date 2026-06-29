@@ -4,12 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Management 3D Carousel</title>
+    <title>Spotify Family Manager | 3D Carousel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <div class="container">
+        <!-- Theme Toggle Bar -->
+        <div class="theme-bar">
+            <div class="theme-bar-logo">
+                <svg class="spotify-logo" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.586 14.424c-.18.295-.565.387-.86.207-2.377-1.454-5.37-1.783-8.893-.982-.336.075-.668-.135-.744-.47-.077-.337.135-.668.47-.745 3.856-.88 7.15-.51 9.82.128.296.18.387.563.207.86zm1.224-2.724c-.226.367-.707.487-1.074.26-2.72-1.672-6.87-2.157-10.08-1.182-.413.125-.847-.11-.972-.522-.125-.413.11-.847.522-.972 3.67-1.114 8.24-.57 11.35 1.344.366.226.486.708.26 1.072zm.105-2.835C14.392 8.71 8.622 8.52 5.287 9.533c-.512.155-1.046-.135-1.202-.647-.156-.513.136-1.046.647-1.202 3.82-1.16 10.19-.94 14.28 1.49.46.273.61.87.337 1.33-.275.46-.872.61-1.332.338z"/>
+                </svg>
+                <span class="logo-text">Spotify Family</span>
+            </div>
+            <button class="theme-toggle" id="themeToggleBtn" aria-label="Toggle theme">
+                <span class="theme-toggle-icon icon-light">
+                    <!-- Sun Icon -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </span>
+                <span class="theme-toggle-icon icon-dark">
+                    <!-- Moon Icon -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </span>
+                <span class="theme-toggle-text" id="themeToggleText">Theme</span>
+            </button>
+        </div>
 
         <!-- Current Month Banner -->
         <div class="month-banner">
@@ -143,6 +166,10 @@
                 </div>
             </div>
 
+            <div class="modal-actions">
+                <button class="back-btn" id="cancelPaymentBtn">Cancel</button>
+                <button class="confirm-payment-btn" id="confirmPaymentBtn">Confirm Payment</button>
+            </div>
 
         </div>
     </div>
