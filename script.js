@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Sample account data
     const sampleAccounts = [
-        {
+        
+          {
             id: 1,
-            name: 'Amanda Mayinje',
-            avatar: 'assets/avatars/amanda.jpg',
-            billingMonth: ['February', 'August'],
+            name: 'Bhekumuzi Tshabalala',
+            avatar: 'assets/avatars/muzi.jpg',
+            billingMonth: ['January', 'July'],
             status: 'pending'
         },
         {
@@ -36,11 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
             billingMonth: ['June', 'December'],
             status: 'pending'
         },
-        {
+        { 
             id: 6,
-            name: 'Bhekumuzi Tshabalala',
-            avatar: 'assets/avatars/muzi.jpg',
-            billingMonth: ['January', 'July'],
+            name: 'Amanda Mayinje',
+            avatar: 'assets/avatars/amanda.jpg',
+            billingMonth: ['February', 'August'],
             status: 'pending'
         }
     ];
